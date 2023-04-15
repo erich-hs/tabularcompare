@@ -16,13 +16,14 @@ from compare import Comparison
 @click.argument('df2', type=click.Path(exists=True), required=True)
 @click.option('-c', '--columns', '--on', help='Comma-separated list of key column(s) to compare df1 against df2. When not provided, df1 and df2 will be matched on index.')
 @click.option('-ic', '--ignore_columns', help='Comma-separated list of column(s) to ignore from df1 and df2.')
-@click.option('-n1', '--df1_name', default='df1', help='Alias for Data frame 1.')
-@click.option('-n2', '--df2_name', default='df2', help='Alias for Data frame 2.')
+@click.option('-n1', '--df1_name', default='df1', help='Alias for Data frame 1. Default = df1')
+@click.option('-n2', '--df2_name', default='df2', help='Alias for Data frame 2. Default = df2')
 @click.option('-is', '--ignore_spaces', is_flag=True, help='Flag to strip and ignore whitespaces from string columns.')
 @click.option('-ci', '--case_insensitive', is_flag=True, help='Flag to compare string columns on a case-insensitive manner.')
+@click.option('-txt', '--txt', is_flag=True, help='Flag to output a .txt report with a comparison summary.')
+@click.option('-html', '--html', is_flag=True, help='Flag to output an HTML report with a comparison summary.')
 @click.option('-od', '--only_deltas', is_flag=True, help='Flag to suppress original dataframes from the output .xlsx report.')
-@click.option('-r', '--report', is_flag=True, help='Flag to output a .txt report with a comparison summary.')
-@click.option('-o', '--output', '--out', type=click.Path(exists=True), default='.', help='Output location for report files.')
+@click.option('-o', '--output', '--out', type=click.Path(exists=True), default='.', help='Output location for report files. Defaults to current location.')
 def cli(df1,
         df2,
         columns,
@@ -31,8 +32,9 @@ def cli(df1,
         df2_name,
         ignore_spaces,
         case_insensitive,
+        txt,
+        html,
         only_deltas,
-        report,
         output):
     df1 = load_from_file(df1)
     df2 = load_from_file(df2)
@@ -63,12 +65,15 @@ def cli(df1,
     )
 
     # Reporting
-    output_xlsx = f"{df1_name}_to_{df2_name}_comparison.xlsx"
-    write_originals = not only_deltas    
-    if report:
-        output_txt = f"{df1_name}_to_{df2_name}_comparison.txt"
+    output_xlsx = f"{df1_name}_to_{df2_name}_comparison_report.xlsx"
+    write_originals = not only_deltas
+    comparison.report_to_xlsx(file_name=output_xlsx, file_location=output, write_originals=write_originals)
+    if txt:
+        output_txt = f"{df1_name}_to_{df2_name}_comparison_report.txt"
         comparison.report_to_txt(file_name=output_txt, file_location=output)
-    comparison.deltas_to_excel(file_name=output_xlsx, file_location=output, write_originals=write_originals)
+    if html:
+        output_html = f"{df1_name}_to_{df2_name}_comparison_report.html"
+        comparison.report_to_html(file_name=output_html, file_location=output)
 
 if __name__=="__main__":
     cli()
