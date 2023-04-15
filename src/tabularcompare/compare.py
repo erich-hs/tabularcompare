@@ -256,7 +256,6 @@ class Comparison:
         col_widths = []
         for col in self._diverging_subset_df.columns:
             col_max_length = self._diverging_subset_df[col].str.len().max()
-            # col_width = 'auto' if col_max_length < 40 else '250px'
             col_width = 'auto' if col_max_length < 25 else '160px'
             col_widths.append(col_width)
         html_table = build_table(self._diverging_subset_df,
