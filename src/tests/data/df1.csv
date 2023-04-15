@@ -1,0 +1,13 @@
+index1,index2,fname,mname,lname,email,phone,dob,active
+U001,UC01,Michael,Joseph,Jackson,mj-abc@gmail.com,999-888-8989,1958-08-29,TRUE
+U001,UC02,Michael,Joseph,Jackson,mj-abc@hotmail.com,999-888-8989,1958-08-29,TRUE
+U001,UC03,Michael,Joseph,Jackson,,999-888-7777,1958-08-29,FALSE
+U002,UC01,Steve,Paul,Jobs,sj-abc@apple.com,,1955-02-24,TRUE
+U002,UC02,Steve,Paul,Jobs,sj-abc@gmail.com,555-888-8989,1955-02-24,TRUE
+U002,UC03,Steve,Paul,Jobs,sj-abc@yahoo.com,555-888-8989,1955-02-24,FALSE
+U003,UC01,Albert,,Einstein,ae-abc@gmail.com,777-444-8989,1879-03-14,TRUE
+U003,UC02,Albert,,Einstein,ae-abc@yahoo.com,777-888-8989,1879-03-14,TRUE
+U004,UC01,Nikola,,Tesla,em-abc@tesla.com,,1856-07-10,TRUE
+U004,UC02,Nikola,-,Tesla,em-abc@spacex.com,333-111-8989,1856-07-10,FALSE
+U004,UC03,Nikola,-,Tesla,em-abc@twitter.com,333-222-8989,1856-07-10,FALSE
+U004,UC04,Nikola,,Tesla,em-abc@gmail.com,333-888-8989,1856-07-10,TRUE
