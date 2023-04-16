@@ -1,5 +1,8 @@
+import warnings
 import pandas as pd
 from typing import Union
+
+warnings.simplefilter("ignore")
 
 def decoding_handler(loader):
     def inner_loader(*args, **kwargs):

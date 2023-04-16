@@ -3,13 +3,6 @@ import click
 from utils import load_from_file
 from compare import Comparison
 
-#TODO:
-'''
-- Handle file is already open (PermissionError)
-- Handle df with collumn full of null values, while the other has valid values
-- Handle missing columns from join_columns in df1 or df2
-'''
-
 @click.command()
 @click.argument('df1', type=click.Path(exists=True), required=True)
 @click.argument('df2', type=click.Path(exists=True), required=True)
@@ -40,10 +33,10 @@ def cli(df1,
         encoding,
         verbose):
     if verbose:
-        print(f'Reading {df1_name} from {os.path.abspath(df1)}.')
+        print(f'Reading {df1_name} from {os.path.abspath(df1)}...')
     df1 = load_from_file(df1, encoding)
     if verbose:
-        print(f'Reading {df2_name} from {os.path.abspath(df2)}.')
+        print(f'Reading {df2_name} from {os.path.abspath(df2)}...')
     df2 = load_from_file(df2, encoding)
 
     if df1.equals(df2) and verbose:
@@ -62,36 +55,58 @@ def cli(df1,
 
     # Comparison object
     if verbose:
-        print(f'Generating comparison results.')
-    comparison = Comparison(
-        df1=df1,
-        df2=df2,
-        join_columns=join_columns,
-        ignore_columns=ignore_columns,
-        on_index=on_index,
-        df1_name=df1_name,
-        df2_name=df2_name,
-        ignore_spaces=ignore_spaces,
-        ignore_case=case_insensitive,
-        cast_column_names_lower=False
-    )
+        print(f'Generating comparison results...')
+    try:
+        comparison = Comparison(
+            df1=df1,
+            df2=df2,
+            join_columns=join_columns,
+            ignore_columns=ignore_columns,
+            on_index=on_index,
+            df1_name=df1_name,
+            df2_name=df2_name,
+            ignore_spaces=ignore_spaces,
+            ignore_case=case_insensitive,
+            cast_column_names_lower=False
+        )
+    except Exception as e:
+        click.echo(click.style(f'{type(e).__name__}: {e}', fg='red'))
+        quit(-1)
 
     # Reporting
     output_xlsx = f"{df1_name}_to_{df2_name}_comparison_report.xlsx"
     write_originals = not only_deltas
     if verbose:
         print(f'Writing .xlsx report to {os.path.join(output, output_xlsx)}...')
-    comparison.report_to_xlsx(file_name=output_xlsx, file_location=output, write_originals=write_originals)
+    try:
+        comparison.report_to_xlsx(file_name=output_xlsx, file_location=output, write_originals=write_originals)
+        xlsx_complete_msg = f'Comparison .xlsx report written to {os.path.abspath(os.path.join(output, output_xlsx))}'
+        click.echo(click.style(xlsx_complete_msg, fg='green'))
+    except Exception as e:
+        click.echo(click.style(f'{type(e).__name__}: {e}', fg='red'))
+        quit(-1)
     if txt:
-        output_txt = f"{df1_name}_to_{df2_name}_comparison_report.txt"
-        if verbose:
-            print(f'Writing .txt report to {os.path.join(output, output_txt)}...')
-        comparison.report_to_txt(file_name=output_txt, file_location=output)
+        try:
+            output_txt = f"{df1_name}_to_{df2_name}_comparison_report.txt"
+            if verbose:
+                print(f'Writing .txt report to {os.path.join(output, output_txt)}...')
+            comparison.report_to_txt(file_name=output_txt, file_location=output)
+            txt_complete_msg = f'Comparison .txt report written to {os.path.abspath(os.path.join(output, output_txt))}'
+            click.echo(click.style(txt_complete_msg, fg='green'))
+        except Exception as e:
+            click.echo(click.style(f'{type(e).__name__}: {e}', fg='red'))
+            quit(-1)
     if html:
-        output_html = f"{df1_name}_to_{df2_name}_comparison_report.html"
-        if verbose:
-            print(f'Writing HTML report to {os.path.join(output, output_html)}...')
-        comparison.report_to_html(file_name=output_html, file_location=output)
+        try:
+            output_html = f"{df1_name}_to_{df2_name}_comparison_report.html"
+            if verbose:
+                print(f'Writing HTML report to {os.path.join(output, output_html)}...')
+            comparison.report_to_html(file_name=output_html, file_location=output)
+            html_complete_msg = f'Comparison HTML report written to {os.path.abspath(os.path.join(output, output_html))}'
+            click.echo(click.style(html_complete_msg, fg='green'))
+        except Exception as e:
+            click.echo(click.style(f'{type(e).__name__}: {e}', fg='red'))
+            quit(-1)
 
 if __name__=="__main__":
     cli()
