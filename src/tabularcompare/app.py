@@ -1,11 +1,10 @@
+import os
 import click
 from utils import load_from_file
 from compare import Comparison
 
 #TODO:
 '''
-- Verbosity
-- Handle identical dataframes and exit
 - Handle file is already open (PermissionError)
 - Handle df with collumn full of null values, while the other has valid values
 - Handle missing columns from join_columns in df1 or df2
@@ -24,6 +23,8 @@ from compare import Comparison
 @click.option('-html', '--html', is_flag=True, help='Flag to output an HTML report with a comparison summary.')
 @click.option('-od', '--only_deltas', is_flag=True, help='Flag to suppress original dataframes from the output .xlsx report.')
 @click.option('-o', '--output', '--out', type=click.Path(exists=True), default='.', help='Output location for report files. Defaults to current location.')
+@click.option('-e', '--encoding', default=None, help='Character encoding to read df1 and df2.')
+@click.option('-v', '--verbose', is_flag=True, help='Verbosity.')
 def cli(df1,
         df2,
         columns,
@@ -35,9 +36,18 @@ def cli(df1,
         txt,
         html,
         only_deltas,
-        output):
-    df1 = load_from_file(df1)
-    df2 = load_from_file(df2)
+        output,
+        encoding,
+        verbose):
+    if verbose:
+        print(f'Reading {df1_name} from {os.path.abspath(df1)}.')
+    df1 = load_from_file(df1, encoding)
+    if verbose:
+        print(f'Reading {df2_name} from {os.path.abspath(df2)}.')
+    df2 = load_from_file(df2, encoding)
+
+    if df1.equals(df2) and verbose:
+        print(f'{df1_name} at {os.path.abspath(df1)} and {df2_name} at {os.path.abspath(df2)} are identical.')
 
     # Join params
     if columns:
@@ -51,6 +61,8 @@ def cli(df1,
         ignore_columns = [col.strip() for col in ignore_columns.split(',')]
 
     # Comparison object
+    if verbose:
+        print(f'Generating comparison results.')
     comparison = Comparison(
         df1=df1,
         df2=df2,
@@ -67,12 +79,18 @@ def cli(df1,
     # Reporting
     output_xlsx = f"{df1_name}_to_{df2_name}_comparison_report.xlsx"
     write_originals = not only_deltas
+    if verbose:
+        print(f'Writing .xlsx report to {os.path.join(output, output_xlsx)}...')
     comparison.report_to_xlsx(file_name=output_xlsx, file_location=output, write_originals=write_originals)
     if txt:
         output_txt = f"{df1_name}_to_{df2_name}_comparison_report.txt"
+        if verbose:
+            print(f'Writing .txt report to {os.path.join(output, output_txt)}...')
         comparison.report_to_txt(file_name=output_txt, file_location=output)
     if html:
         output_html = f"{df1_name}_to_{df2_name}_comparison_report.html"
+        if verbose:
+            print(f'Writing HTML report to {os.path.join(output, output_html)}...')
         comparison.report_to_html(file_name=output_html, file_location=output)
 
 if __name__=="__main__":
