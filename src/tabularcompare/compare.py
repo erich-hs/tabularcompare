@@ -21,6 +21,8 @@ class Comparison:
         df2_name (str, optional): The name of the second DataFrame to use in the comparison report.
         ignore_spaces (bool, optional): If True, leading and trailing whitespace in string columns will be ignored.
         ignore_case (bool, optional): If True, string columns will be compared case-insensitively.
+        abs_tol (float, optional): Absolute tolerance between two numeric values.
+        rel_tol (float, optional): Relative tolerance between two numeric values.
         cast_column_names_lower (bool, optional): If True, column names will be converted to lowercase before comparison.
         encoding (str, optional): Encoding to parse txt and HTML reports. Default = "utf-8".
 
@@ -52,6 +54,8 @@ class Comparison:
                  join_columns: Union[list, str]=None,
                  ignore_columns: Union[list, str]=None,
                  on_index: bool=False,
+                 abs_tol: int=0,
+                 rel_tol: int=0,
                  df1_name: str="df1",
                  df2_name: str="df2",
                  ignore_spaces: bool=False,
@@ -77,6 +81,8 @@ class Comparison:
         self.df2_name = df2_name
         self.encoding = encoding
         self._on_index = on_index
+        self._abs_tol = abs_tol
+        self._rel_tol = rel_tol
         self._ignore_spaces = ignore_spaces
         self._ignore_case = ignore_case
         self._cast_column_names_lower = cast_column_names_lower
@@ -113,6 +119,8 @@ class Comparison:
             df2=self.df2,
             join_columns=self.join_columns,
             on_index=self._on_index,
+            abs_tol=self._abs_tol,
+            rel_tol=self._rel_tol,
             df1_name=self.df1_name,
             df2_name=self.df2_name,
             ignore_spaces=self._ignore_spaces,
