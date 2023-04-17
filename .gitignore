@@ -1,5 +1,8 @@
 # Tests
 *.ipynb
+tests/*.html
+tests/*.txt
+tests/*.xlsx
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
