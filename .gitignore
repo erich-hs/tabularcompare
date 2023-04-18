@@ -3,6 +3,7 @@
 tests/*.html
 tests/*.txt
 tests/*.xlsx
+.test_venv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

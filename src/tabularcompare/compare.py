@@ -247,12 +247,16 @@ class Comparison:
     
     def report_to_html(self,
                        file_name: str,
+                       max_diverging_records: int=100,
+                       max_diverging_columns: int=10,
                        sample_count: int=10,
                        column_count: int=10,
                        file_location: str=".") -> None:
         """
         Saves datacompy.Compare report in HTML.
         Args:
+            max_diverging_records (int): The maximum number of records to render the diverging subset table. Default = 100.
+            max_diverging_columns (int): The maximum number of columns to render the diverging subset table. Default = 10.
             sample_count (int): The number of sample records to return in the report. Default = 10.
             column_count (int): The number of columns to display in the sample records output. Default = 10.
             file_name (str): File name. Can optionally be a file path relative to the current directory.
@@ -266,7 +270,10 @@ class Comparison:
             col_max_length = self._diverging_subset_df[col].str.len().max()
             col_width = 'auto' if col_max_length < 25 else '160px'
             col_widths.append(col_width)
-        html_table = build_table(self._diverging_subset_df,
+        html_table_rows = self._diverging_subset_df.index[:max_diverging_records]
+        html_table_cols = self._diverging_subset_df.columns[:max_diverging_columns]
+        html_table = self._diverging_subset_df.loc[html_table_rows, html_table_cols]
+        html_table = build_table(html_table,
                                  "grey_dark",
                                  font_size="12px",
                                  font_family="Monospace",

@@ -1,7 +1,7 @@
 import os
 import click
-from utils import load_from_file, report_to_xlsx, report_to_txt, report_to_html
-from compare import Comparison
+from tabularcompare.utils import load_from_file, report_to_xlsx, report_to_txt, report_to_html
+from tabularcompare.compare import Comparison
 
 @click.command()
 @click.argument('df1', type=click.Path(exists=True), required=True)
@@ -61,7 +61,7 @@ def cli(df1,
 
     # Comparison object
     if verbose:
-        print(f'Generating comparison results...')
+        print('Generating comparison results...')
     try:
         comparison = Comparison(
             df1=df1,
