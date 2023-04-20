@@ -1,5 +1,6 @@
 import os
 import math
+import warnings
 import pandas as pd
 from typing import Union
 from datacompy import Compare
@@ -93,9 +94,16 @@ class Comparison:
         self._df1_intersect_cols = []
         self._df2_intersect_cols = []
         self._intersect_match_cols = []
+        self._handle_join()
         self._preprocess_int_missing()
         self._compare()
         self._enhanced_compare()
+    
+    # join_columns and on_index handling
+    def _handle_join(self):
+        if self.join_columns is None and not self._on_index:
+            warnings.warn("The join_columns parameter was not provided. Performing join on DataFrame indices. Set on_index=True to silence this warning.")
+            self._on_index = True
 
     def _preprocess_int_missing(self):
         """
@@ -279,6 +287,12 @@ class Comparison:
         Returns a set of columns present in both df1 and df2.
         """
         return OrderedSet(self.df1.columns) & OrderedSet(self.df2.columns)
+    
+    def intersect_rows(self) -> pd.DataFrame:
+        """
+        Returns a pandas DataFrame with the subset of matching rows between df1 and df2.
+        """
+        return self._comparison_results.intersect_rows
 
     def report_to_txt(
         self,

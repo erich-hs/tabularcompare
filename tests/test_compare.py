@@ -110,3 +110,63 @@ def test_intersect_columns(create_test_data: tuple):
     comparison = compare.Comparison(df1, df2, join_columns)
     intersect_columns = comparison.intersect_columns()
     assert intersect_columns == expected_intersect_columns
+
+def test_intersect_rows(create_test_data: tuple):
+    expected_intersect_rows = pd.DataFrame({
+        'idx1': {0: 1, 1: 1, 2: 2, 3: 3, 4: 3},
+        'idx2': {0: 'A', 1: 'B', 2: 'A', 3: 'A', 4: 'B'},
+        'fname_df1': {0: 'Nikola',
+        1: 'Nikola',
+        2: 'Albert',
+        3: 'Stephen',
+        4: 'Stephen'},
+        'lname_df1': {0: 'Tesla',
+        1: 'Tesla',
+        2: 'Einstein',
+        3: 'Hawking',
+        4: 'Hawking'},
+        'emptycol_df1': {0: '', 1: '', 2: '', 3: '', 4: ''},
+        'email_df1': {0: 'em@tesla.com',
+        1: 'em@spacex.com',
+        2: 'ae@gmail.com',
+        3: 'sh@cam.uk',
+        4: ''},
+        'dob_df1': {0: pd.Timestamp('1856-07-10 00:00:00'),
+        1: pd.Timestamp('1856-07-10 00:00:00'),
+        2: pd.Timestamp('1879-03-14 00:00:00'),
+        3: pd.Timestamp('1942-01-08 00:00:00'),
+        4: pd.Timestamp('1942-01-08 00:00:00')},
+        'active_df1': {0: True, 1: False, 2: True, 3: True, 4: False},
+        'fname_df2': {0: 'Nick', 1: 'Nick', 2: 'Albert', 3: 'Stephen', 4: 'Stephen'},
+        'lname_df2': {0: 'Tesla',
+        1: 'Tesla',
+        2: 'Einstein',
+        3: 'Hawking',
+        4: 'Hawking'},
+        'emptycol_df2': {0: '', 1: '', 2: '', 3: '', 4: ''},
+        'email_df2': {0: 'em@tesla.com',
+        1: 'em@spacex.com',
+        2: 'ae@gmail.com',
+        3: 'sh@cam.uk',
+        4: ''},
+        'dob_df2': {0: pd.Timestamp('1856-07-10 00:00:00'),
+        1: pd.Timestamp('2000-01-01 00:00:00'),
+        2: pd.Timestamp('1879-03-14 00:00:00'),
+        3: pd.Timestamp('1942-03-08 00:00:00'),
+        4: pd.Timestamp('1942-01-08 00:00:00')},
+        'active_df2': {0: True, 1: False, 2: True, 3: True, 4: False},
+        '_merge': {0: 'both', 1: 'both', 2: 'both', 3: 'both', 4: 'both'},
+        'fname_match': {0: False, 1: False, 2: True, 3: True, 4: True},
+        'lname_match': {0: True, 1: True, 2: True, 3: True, 4: True},
+        'emptycol_match': {0: True, 1: True, 2: True, 3: True, 4: True},
+        'email_match': {0: True, 1: True, 2: True, 3: True, 4: True},
+        'dob_match': {0: True, 1: False, 2: True, 3: False, 4: True},
+        'active_match': {0: True, 1: True, 2: True, 3: True, 4: True}
+    })
+    df1, df2, join_columns = create_test_data
+    comparison = compare.Comparison(df1, df2, join_columns)
+    intersect_rows = comparison.intersect_rows().fillna("")
+    dtime_cols = intersect_rows.select_dtypes(include=['datetime'])
+    intersect_rows[dtime_cols.columns] = dtime_cols.fillna(pd.to_datetime('2000-01-01'))
+    intersect_rows["_merge"] = intersect_rows["_merge"].astype("object")
+    assert intersect_rows.equals(expected_intersect_rows)
