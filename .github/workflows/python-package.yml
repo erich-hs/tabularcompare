@@ -24,14 +24,12 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: Install
       run: |
         make install
     - name: Lint with pylint
-      working-directory: ./src/tabularcompare
       run: |
         make lint
     - name: Test with pytest
-      working-directory: ./src/tabularcompare
       run: |
         make test
