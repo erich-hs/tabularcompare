@@ -11,3 +11,6 @@ test:
 
 format:
 	black src/tabularcompare/*.py
+
+all:
+	install lint test format
