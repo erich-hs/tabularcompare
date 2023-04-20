@@ -1,3 +1,6 @@
+# Dev
+dev_requirements.txt
+
 # Tests
 *.ipynb
 tests/*.html
