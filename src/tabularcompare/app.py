@@ -120,6 +120,8 @@ def cli(
         join_columns = [col.strip() for col in columns.split(",")]
         on_index = False
     else:
+        if verbose:
+            print("join_columns not provided. Performing comparison on DataFrame indices.")
         join_columns = None
         on_index = True
 
