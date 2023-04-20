@@ -3,7 +3,7 @@ install:
 		pip install -r requirements.txt
 
 lint:
-	pylint --disable=R,C,W1203,E1101 tabularcompare.compare tabularcompare.utils
+	pylint --disable=R,C,W1203,E1101 compare utils
 
 test:
 	python -m pytest tests/test_compare.py &&\
