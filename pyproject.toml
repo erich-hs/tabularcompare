@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tabularcompare"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Erich Henrique", email="erich.hs13@gmail.com" },
 ]
