@@ -28,8 +28,10 @@ jobs:
       run: |
         make install
     - name: Lint with pylint
+      working-directory: ./src/tabularcompare
       run: |
         make lint
     - name: Test with pytest
+      working-directory: ./src/tabularcompare
       run: |
         make test
