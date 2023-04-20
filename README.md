@@ -1,2 +1,3 @@
-# tabular-compare
-Tabular data comparison tool
+# TabularCompare
+
+Tabular data comparison wrapper for DataComPy
