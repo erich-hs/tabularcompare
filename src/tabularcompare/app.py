@@ -42,6 +42,12 @@ from .core import Comparison
     help="Flag to compare string columns on a case-insensitive manner.",
 )
 @click.option(
+    "-cl",
+    "--cast_lowercase",
+    is_flag=True,
+    help="Flag to cast column names to lower case before comparison.",
+)
+@click.option(
     "-at",
     "--abs_tol",
     default=0.0,
@@ -92,6 +98,7 @@ def cli(
     df2_name,
     ignore_spaces,
     case_insensitive,
+    cast_lowercase,
     abs_tol,
     rel_tol,
     txt,
@@ -121,7 +128,9 @@ def cli(
         on_index = False
     else:
         if verbose:
-            print("join_columns not provided. Performing comparison on DataFrame indices.")
+            print(
+                "join_columns not provided. Performing comparison on DataFrame indices."
+            )
         join_columns = None
         on_index = True
 
@@ -144,7 +153,7 @@ def cli(
             df2_name=df2_name,
             ignore_spaces=ignore_spaces,
             ignore_case=case_insensitive,
-            cast_column_names_lower=False,
+            cast_column_names_lower=cast_lowercase,
         )
     except Exception as e:
         click.echo(click.style(f"{type(e).__name__}: {e}", fg="red"))
