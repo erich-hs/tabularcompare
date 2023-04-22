@@ -28,6 +28,7 @@ dependencies = [
     "pretty-html-table==0.9.16",
     "click",
     "xlwt",
+    "xlrd",
     "openpyxl",
 ]
 # dynamic = ["version", "readme"]
