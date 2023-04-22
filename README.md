@@ -66,8 +66,8 @@ comparison.df2_unq_columns()
 |   | idx1 | idx2 |	 colC |
 |:-:|-----:|-----:|------:|
 | 0 |	A  |  01  |  foo  |
-| 0 |	B  |  01  |  bar  |
-| 0 |	C  |  03  |  baz  |
+| 1 |	B  |  01  |  bar  |
+| 2 |	C  |  03  |  baz  |
 
 - #### Enhanced Reporting
 The report functionality is now callable from the comparison object. It includes a .txt, .html, and .xlsx version.
