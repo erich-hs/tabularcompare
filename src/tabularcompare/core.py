@@ -51,6 +51,10 @@ class Comparison:
         report_to_xlsx: Saves a .xlsx report with the diverging subset, unique columns, and unique rows to df1 and df2.
     """
 
+    # TODO:
+    # 1. Handle case when df1 has column completely missing and df2 doesn't.
+    #   TypeError: boolean value of NA is ambiguous
+
     def __init__(
         self,
         df1: pd.DataFrame,
@@ -339,7 +343,7 @@ class Comparison:
         file_path = os.path.join(file_location, file_name)
         col_widths = []
         for col in self._diverging_subset_df.columns:
-            col_max_length = self._diverging_subset_df[col].str.len().max()
+            col_max_length = self._diverging_subset_df[col].astype(str).str.len().max()
             col_width = "auto" if col_max_length < 25 else "160px"
             col_widths.append(col_width)
         html_table_rows = self._diverging_subset_df.index[:max_diverging_records]

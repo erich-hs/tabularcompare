@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 import pandas as pd
-from tabularcompare import compare
+from tabularcompare import Comparison
 
 # Test parameters
 @pytest.fixture
@@ -34,7 +34,7 @@ def create_test_data():
 def test_report(create_test_data: tuple):
     expected_partial_report = 'DataComPy Comparison\n--------------------\n\nDataFrame Summary\n-----------------\n\n  DataFrame  Columns  Rows\n0       df1        8     6\n1       df2        8     6\n\nColumn Summary\n--------------\n\nNumber of columns in common: 8\nNumber of columns in df1 but not in df2: 0\nNumber of columns in df2 but not in df1: 0\n\nRow Summary\n-----------\n\nMatched on: idx1, idx2\nAny duplicates on match values: Yes\nAbsolute Tolerance: 0\nRelative Tolerance: 0\nNumber of rows in common: 5\nNumber of rows in df1 but not in df2: 1\nNumber of rows in df2 but not in df1: 1\n\nNumber of rows with some compared columns unequal: 3\nNumber of rows with all compared columns equal: 2\n\nColumn Comparison\n-----------------\n\nNumber of columns compared with some values unequal: 2\nNumber of columns compared with all values equal: 6\nTotal number of values which compare unequal: 4\n\nColumns with Unequal Values or Types\n------------------------------------'
     df1, df2, join_columns = create_test_data
-    comparison = compare.Comparison(df1, df2, join_columns)
+    comparison = Comparison(df1, df2, join_columns)
     report = comparison.report()
     assert expected_partial_report in report
 
@@ -48,7 +48,7 @@ def test_diverging_subset(create_test_data: tuple):
              3: '{1942-01-08} --> {1942-03-08}'}}
     )
     df1, df2, join_columns = create_test_data
-    comparison = compare.Comparison(df1, df2, join_columns)
+    comparison = Comparison(df1, df2, join_columns)
     diverging_subset = comparison.diverging_subset()
     assert diverging_subset.equals(expected_diverging_subset)
 
@@ -58,7 +58,7 @@ def test_df1_unq_columns(create_test_data: tuple):
      'idx2': {0: 'A', 1: 'B', 2: 'A', 3: 'A', 4: 'B', 5: 'A'}}
     )
     df1, df2, join_columns = create_test_data
-    comparison = compare.Comparison(df1, df2, join_columns)
+    comparison = Comparison(df1, df2, join_columns)
     df1_unq_columns = comparison.df1_unq_columns()
     assert df1_unq_columns.equals(expected_df1_unq_columns)
 
@@ -68,7 +68,7 @@ def test_df2_unq_columns(create_test_data: tuple):
      'idx2': {0: 'A', 1: 'B', 2: 'A', 3: 'A', 4: 'B', 5: 'A'}}
     )
     df1, df2, join_columns = create_test_data
-    comparison = compare.Comparison(df1, df2, join_columns)
+    comparison = Comparison(df1, df2, join_columns)
     df2_unq_columns = comparison.df2_unq_columns()
     assert df2_unq_columns.equals(expected_df2_unq_columns)
 
@@ -84,7 +84,7 @@ def test_df1_unq_rows(create_test_data: tuple):
      'active': {5: True}}
     )
     df1, df2, join_columns = create_test_data
-    comparison = compare.Comparison(df1, df2, join_columns)
+    comparison = Comparison(df1, df2, join_columns)
     df1_unq_rows = comparison.df1_unq_rows().fillna("")
     assert df1_unq_rows.equals(expected_df1_unq_rows)
 
@@ -100,14 +100,14 @@ def test_df2_unq_rows(create_test_data: tuple):
      'active': {6: ""}}
     )
     df1, df2, join_columns = create_test_data
-    comparison = compare.Comparison(df1, df2, join_columns)
+    comparison = Comparison(df1, df2, join_columns)
     df2_unq_rows = comparison.df2_unq_rows().fillna("")
     assert df2_unq_rows.equals(expected_df2_unq_rows)
 
 def test_intersect_columns(create_test_data: tuple):
     expected_intersect_columns = ['idx1', 'idx2', 'fname', 'lname', 'emptycol', 'email', 'dob', 'active']
     df1, df2, join_columns = create_test_data
-    comparison = compare.Comparison(df1, df2, join_columns)
+    comparison = Comparison(df1, df2, join_columns)
     intersect_columns = comparison.intersect_columns()
     assert intersect_columns == expected_intersect_columns
 
@@ -164,7 +164,7 @@ def test_intersect_rows(create_test_data: tuple):
         'active_match': {0: True, 1: True, 2: True, 3: True, 4: True}
     })
     df1, df2, join_columns = create_test_data
-    comparison = compare.Comparison(df1, df2, join_columns)
+    comparison = Comparison(df1, df2, join_columns)
     intersect_rows = comparison.intersect_rows().fillna("")
     dtime_cols = intersect_rows.select_dtypes(include=['datetime'])
     intersect_rows[dtime_cols.columns] = dtime_cols.fillna(pd.to_datetime('2000-01-01'))

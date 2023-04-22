@@ -1,12 +1,12 @@
 import os
 import click
-from tabularcompare.utils import (
+from .utils import (
     load_from_file,
     report_to_xlsx,
     report_to_txt,
     report_to_html,
 )
-from tabularcompare.compare import Comparison
+from .core import Comparison
 
 
 @click.command()
