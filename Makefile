@@ -3,7 +3,7 @@ install:
 	python -m pip install .
 
 lint:
-	pylint --disable=R,C,W1203,E1101 src.tabularcompare.compare src.tabularcompare.utils --fail-under=9.0
+	pylint --disable=R,C,W1203,E1101 src.tabularcompare.core src.tabularcompare.utils --fail-under=9.0
 
 test:
 	python -m pytest tests/test_compare.py &&\
