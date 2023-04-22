@@ -28,7 +28,7 @@ dependencies = [
     "pretty-html-table==0.9.16",
     "click",
     "xlwt",
-    "openpyxl",    
+    "openpyxl",
 ]
 # dynamic = ["version", "readme"]
 
@@ -40,6 +40,7 @@ dev = [
   "pytest",
   "pytest-cov",
   "pylint",
+  "pre-commit",
   "black",
   "build",
   "twine",
