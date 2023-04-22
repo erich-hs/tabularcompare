@@ -40,15 +40,34 @@ comparison = Comparison(
 ```
 ### Added Functionalities
 - #### Diverging Subset
-This method introduces an enhanced view focused on the changes identified between the dataframes, following the notation ```{df1} --> {df2}```.
+This method introduces an enhanced look at the changes identified at the intersection of compared DataFrames, following the notation ```{df1} --> {df2}```.
 ```python
 comparison.diverging_subset()
 ```
-Will return the following result:
 |   | idx1 | idx2 |          colA |            colB |
 |:-:|-----:|-----:|--------------:|----------------:|
 | 0 | A    | 01   | NaN           | {100} --> {101} |
 | 1 | B    | 01   | {BA} --> {XA} | NaN             |
+
+Rows that are unique to either DataFrame can be called via ```.df1_unq_rows()``` and ```.df2_unq_rows()``` methods.
+
+```python
+comparison.df1_unq_rows()
+```
+|   | idx1 | idx2 |	colA | colB |
+|:-:|-----:|-----:|-----:|-----:|
+| 2 |	B  |  02  |  BB  |	200 |
+
+Columns that are unique to either DataFrame can be called via ```.df1_unq_columns()``` and ```.df2_unq_columns()``` methods.
+
+```python
+comparison.df2_unq_columns()
+```
+|   | idx1 | idx2 |	 colC |
+|:-:|-----:|-----:|------:|
+| 0 |	A  |  01  |  foo  |
+| 0 |	B  |  01  |  bar  |
+| 0 |	C  |  03  |  baz  |
 
 - #### Enhanced Reporting
 The report functionality is now callable from the comparison object. It includes a .txt, .html, and .xlsx version.
@@ -58,7 +77,7 @@ comparison.report_to_html("./results/Report.html")
 comparison.report_to_xlsx("./results/Report.xlsx", write_originals=True)
 ```
 The Excel report will output complete comparison results, with tabs dedicated to:
-* Original dataframes (when write_originals=True).
+* Original dataframes (when ```write_originals=True```).
 * Columns present only on df1 and/or df2.
 * Rows present only on df1 and/or df2.
 * Diverging subset showing all the changes identified from df1 to df2.
@@ -69,11 +88,11 @@ The HTML report will also output a rendered table of the diverging subset on top
 ---
 ### DataComPy Methods
 Most methods native to ```datacompy.Compare``` functionality are still present, including;
-* .report()
-* .df1_unq_columns()/.df2_unq_columns()
-* .df1_unq_rows()/.df2_unq_rows()
-* .intersect_columns()
-* .intersect_rows()
+* ```.report()```
+* ```.df1_unq_rows()``` / ```.df2_unq_rows()```
+* ```.df1_unq_columns()``` / ```.df2_unq_columns()```
+* ```.intersect_columns()```
+* ```.intersect_rows()```
 
 The native ```datacompy.Compare``` method is also callable from the ```tabularcompare``` core module:
 ```python
@@ -109,6 +128,8 @@ Options:
                               columns.
   -ci, --case_insensitive     Flag to compare string columns on a case-
                               insensitive manner.
+  -cl, --cast_lowercase       Flag to cast column names to lower case before
+                              comparison.
   -at, --abs_tol FLOAT        Absolute tolerance between two numeric values.
   -rt, --rel_tol FLOAT        Relative tolerance between two numeric values.
   -txt, --txt                 Flag to output a .txt report with a comparison
