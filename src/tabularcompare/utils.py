@@ -7,28 +7,17 @@ from typing import Union
 warnings.simplefilter("ignore")
 
 
-def decoding_handler(loader):
-    def inner_loader(*args, **kwargs):
-        try:
-            df = loader(*args, **kwargs)
-        except UnicodeDecodeError:
-            df = loader(*args, **kwargs, encoding="ISO-8859-1")
-        return df
-
-    return inner_loader
-
-
 def cli_exception_handler(func):
     def inner_func(*args, **kwargs):
         try:
-            func(*args, **kwargs)
+            f = func(*args, **kwargs)
         except Exception as e:
             click.echo(click.style(f"{type(e).__name__}: {e}", fg="red"))
+        return f
 
     return inner_func
 
 
-@decoding_handler
 @cli_exception_handler
 def load_from_file(file: str, encoding: Union[str, None] = None) -> pd.DataFrame:
     if file.endswith(".csv"):
