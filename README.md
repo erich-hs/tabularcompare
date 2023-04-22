@@ -1,6 +1,6 @@
 # TabularCompare
 
-[![Python package](https://github.com/erich-hs/tabularcompare/actions/workflows/python-package.yml/badge.svg)](https://github.com/erich-hs/tabularcompare/actions/workflows/python-package.yml) [![PyPI license](https://img.shields.io/pypi/l/tabularcompare)](https://pypi.python.org/pypi/tabularcompare/) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/tabularcompare.svg)](https://img.shields.io/pypi/pyversions/tabularcompare) ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg) 
+[![Python package](https://github.com/erich-hs/tabularcompare/actions/workflows/python-package.yml/badge.svg)](https://github.com/erich-hs/tabularcompare/actions/workflows/python-package.yml) [![PyPI license](https://img.shields.io/pypi/l/tabularcompare)](https://pypi.python.org/pypi/tabularcompare/) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/tabularcompare.svg)](https://img.shields.io/pypi/pyversions/tabularcompare) ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
 Tabular data comparison wrapper for [DataComPy](https://capitalone.github.io/datacompy/).
 
@@ -14,7 +14,7 @@ pip install tabularcompare
 ### Comparison object
 ```python
 import pandas as pd
-from tabularcompare import compare
+from tabularcompare import Comparison
 
 df1 = pd.DataFrame(
     {
@@ -34,12 +34,12 @@ df2 = pd.DataFrame(
      }
 )
 
-comparison = compare.Comparison(
+comparison = Comparison(
     df1, df2, join_columns=["idx1", "idx2"]
 )
 ```
 ### Added Functionalities
-#### Diverging Subset
+- #### Diverging Subset
 This method introduces an enhanced view focused on the changes identified between the dataframes, following the notation ```{df1} --> {df2}```.
 ```python
 comparison.diverging_subset()
@@ -47,10 +47,10 @@ comparison.diverging_subset()
 Will return the following result:
 |   | idx1 | idx2 |          colA |            colB |
 |:-:|-----:|-----:|--------------:|----------------:|
-| 0 | A    | 01   | NaN           | {100} --> {}    |
+| 0 | A    | 01   | NaN           | {100} --> {101} |
 | 1 | B    | 01   | {BA} --> {XA} | NaN             |
 
-#### Enhanced Reporting
+- #### Enhanced Reporting
 The report functionality is now callable from the comparison object. It includes a .txt, .html, and .xlsx version.
 ```python
 comparison.report_to_txt("./results/Report.txt")
@@ -65,22 +65,22 @@ The Excel report will output complete comparison results, with tabs dedicated to
 
 The HTML report will also output a rendered table of the diverging subset on top of the file, alongside the native DataComPy summary report.
 
-#### [Fully-fledged Command Line Interface](#CLI)
+- #### Fully-fledged [Command Line Interface](#CLI)
 ---
 ### DataComPy Methods
-Most methods native to ```DataComPy.Compare``` functionality are still present, including;
+Most methods native to ```datacompy.Compare``` functionality are still present, including;
 * .report()
 * .df1_unq_columns()/.df2_unq_columns()
 * .df1_unq_rows()/.df2_unq_rows()
 * .intersect_columns()
 * .intersect_rows()
 
-The native ```DataComPy.Compare``` method is also callable from the ```compare``` module via the same import:
+The native ```datacompy.Compare``` method is also callable from the ```tabularcompare``` core module:
 ```python
-from tabularcompare import compare
+from tabularcompare import Compare
 
-# DataComPy.Compare method
-comparison = compare.Compare(
+# datacompy.Compare method
+comparison = Compare(
     df1, df2, join_columns=["idx1", "idx2"]
 )
 print(comparison.report())
@@ -137,7 +137,7 @@ tabularcompare ./df1.csv ./df2.csv -c 'idx1,idx2' -n1 myTable1 -n2 myTable2 -o .
 
 ```python
 import pandas as pd
-from tabularcompare import compare
+from tabularcompare import Comparison
 
 df1 = pd.DataFrame(
     {
@@ -157,7 +157,7 @@ df2 = pd.DataFrame(
      }
 )
 
-comparison = compare.Comparison(
+comparison = Comparison(
     df1, df2, join_columns=["idx1", "idx2"]
 )
 comparison.diverging_subset()
