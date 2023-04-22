@@ -29,6 +29,7 @@ def cli_exception_handler(func):
 
 
 @decoding_handler
+@cli_exception_handler
 def load_from_file(file: str, encoding: Union[str, None] = None) -> pd.DataFrame:
     if file.endswith(".csv"):
         df = pd.read_csv(file, encoding=encoding)
