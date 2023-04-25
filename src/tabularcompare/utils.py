@@ -13,6 +13,7 @@ def cli_exception_handler(func):
             f = func(*args, **kwargs)
         except Exception as e:
             click.echo(click.style(f"{type(e).__name__}: {e}", fg="red"))
+            f = None
         return f
 
     return inner_func
