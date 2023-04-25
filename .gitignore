@@ -6,7 +6,11 @@ dev_requirements.txt
 tests/*.html
 tests/*.txt
 tests/*.xlsx
+tests/*.xls
+tests/*.csv
 .test_venv
+tests/data/
+tests/results/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
