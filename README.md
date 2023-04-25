@@ -1,6 +1,6 @@
 # TabularCompare
 
-[![Python package](https://github.com/erich-hs/tabularcompare/actions/workflows/python-package.yml/badge.svg)](https://github.com/erich-hs/tabularcompare/actions/workflows/python-package.yml) [![PyPI license](https://img.shields.io/pypi/l/tabularcompare)](https://pypi.python.org/pypi/tabularcompare/) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/tabularcompare.svg)](https://img.shields.io/pypi/pyversions/tabularcompare) ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
+[![Python package](https://github.com/erich-hs/tabularcompare/actions/workflows/python-package.yml/badge.svg)](https://github.com/erich-hs/tabularcompare/actions/workflows/python-package.yml) [![PyPI license](https://img.shields.io/pypi/l/tabularcompare)](https://pypi.python.org/pypi/tabularcompare/) ![PyPI version](https://img.shields.io/pypi/v/tabularcompare?color=blue) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/tabularcompare.svg)](https://img.shields.io/pypi/pyversions/tabularcompare) ![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
 
 Tabular data comparison wrapper for [DataComPy](https://capitalone.github.io/datacompy/).
 
